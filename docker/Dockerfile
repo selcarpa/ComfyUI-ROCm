@@ -16,8 +16,8 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/*
 
 # Clone ComfyUI at specified tag
-ARG COMIFYUI_TAG
-RUN git clone --branch "${COMIFYUI_TAG}" --depth 1 https://github.com/comfyanonymous/ComfyUI.git
+ARG COMFYUI_TAG
+RUN git clone --branch "${COMFYUI_TAG}" --depth 1 https://github.com/comfyanonymous/ComfyUI.git
 
 # Set ComfyUI as working directory
 WORKDIR /workspace/ComfyUI
@@ -32,6 +32,13 @@ RUN mkdir -p /workspace/ComfyUI/models/checkpoints && \
   mkdir -p /workspace/ComfyUI/output && \
   mkdir -p /workspace/ComfyUI/input && \
   mkdir -p /workspace/ComfyUI/custom_nodes
+
+# Clone ComfyUI-Manager into custom_nodes and backup for volume mount fallback
+ARG COMFYUI_MANAGER_TAG=4.2.1
+RUN git clone --branch "${COMFYUI_MANAGER_TAG}" --depth 1 \
+  https://github.com/ltdrdata/ComfyUI-Manager.git \
+  /workspace/ComfyUI/custom_nodes/comfyui-manager && \
+  cp -r /workspace/ComfyUI/custom_nodes /workspace/.default_nodes
 
 # Copy ROCm-tested requirements file
 COPY docker/requirements_rocm.txt /workspace/

@@ -24,6 +24,7 @@
 - 📦 **灵活模型管理** — 手动放置模型，持久卷挂载避免重复下载
 - 🧪 **经过测试的兼容性** — 所有依赖均在真实 AMD 硬件上验证
 - 🎯 **开箱即用** — 预配置示例工作流
+- 📦 **ComfyUI-Manager 预装** — 内置节点管理器，无需手动安装
 - 💾 **持久化存储** — 模型和输出跨重启保留
 
 ## 🚀 快速开始
@@ -116,6 +117,8 @@ services:
 
 运行: `docker compose up -d`
 
+> **ComfyUI-Manager 自动恢复**：镜像内置 ComfyUI-Manager，启动时若 `custom_nodes` 卷中缺失则自动从镜像恢复。设置环境变量 `COMFYUI_MANAGER_DISABLED=true` 可关闭此行为。
+
 ## ⚡ 性能与硬件
 
 ### 测试硬件
@@ -136,26 +139,29 @@ services:
 
 遇到问题请提交 [GitHub Issues](https://github.com/selcarpa/ComfyUI-ROCm/issues)。
 
-## 🔄 本次更新与上一版本的差异
+## 🔄 本次更新与初始版本的差异
 
 ### 🗑️ 移除
-- **`docker/download_models.py`** + **`docker/models.yaml`** — 移除自动模型下载机制。模型改为完全手动放置，详见 [MODEL_SETUP.md](MODEL_SETUP.md)
+- **自动模型下载** — 移除 `download_models.py` + `models.yaml`，模型改为完全手动放置（详见 [MODEL_SETUP.md](MODEL_SETUP.md)）
+- **构建时模型拷贝** — 移除 Dockerfile 中的模型相关拷贝和环境变量
 
 ### 🆕 新增
-- **`BUILD.md` / `BUILD_EN.md`** — 独立构建指南（中/英）
-- **`MODEL_SETUP.md` / `MODEL_SETUP_EN.md`** — 独立模型设置指南（中/英）
-- **`README_EN.md`** — 英文版 README（与中文版分离，便于维护）
+- **ComfyUI-Manager 集成** — 内置节点管理器，启动时自动恢复，开箱即用
+- **构建系统** — `build.sh` + 构建文档，支持可配置版本和自动镜像标签
+- **模型设置指南** — 明确模型放置方式
+- **CI/CD 自动发布** — GitHub Actions 自动构建并推送 Docker 镜像
+- **健康检查** — 容器自动检测 ComfyUI 是否正常运行
 
-### 🔧 修改
+### 🔧 变更
 
-| 文件 | 变更内容 |
+| 角度 | 变更说明 |
 |------|---------|
-| `docker/Dockerfile` | 基础镜像改为可配置 `ARG`；ROCm 6.4.1 → **7.2.4**，PyTorch 2.6.0 → **2.10.0**；移除 `download_models.py`/`models.yaml` 拷贝及 `MODEL_DOWNLOAD` 环境变量；**ComfyUI 改为通过 `ARG COMIFYUI_TAG` 按标签检出**（而非拉取最新代码） |
-| `docker-compose.yaml` | 镜像源改为 `selcarpa/comfyui-rocm`；移除 `pull_policy: always` 和 `MODEL_DOWNLOAD`；新增 `hostname` 和 `./data/temp` 卷；补全注释 |
-| `build.sh` | 基础镜像改为可配置 `--build-arg`；版本标签自动按日期+时间生成；移除 `--progress=plain`；**新增 `COMIFYUI_TAG` 变量**指定 ComfyUI 版本，镜像详细标签中携带 ComfyUI 标签 |
-| `docker/requirements_rocm.txt` | 全面升级版本（frontend 1.23.4→1.44.19, workflow-templates 0.1.30→0.9.91 等）；新增 `comfy-kitchen`、`comfy-aimdo`、`comfyui-manager` 及 `filelock`/`requests`/`simpleeval`/`blake3` 等依赖；按功能分区组织 |
-| `docker/startup.sh` | 移除启动前的模型下载步骤，直接启动 ComfyUI |
-| `README.md` | 从英文全面改写为中文，内容重构，版本信息更新 |
+| **ROCm 升级** | 基础镜像从 ROCm 6.4.1 → **7.2.4**，PyTorch 2.6.0 → **2.10.0**，兼容更多 AMD GPU（RX 7000/9000+） |
+| **ComfyUI 版本锁定** | 从拉取最新代码改为按指定标签（`v0.22.0`）检出，构建可复现 |
+| **依赖优化** | 全面梳理 Python 依赖，剔除与 ROCm 不兼容的包，新增 `comfyui-manager` 等节点生态包，统一管理和版本锁定 |
+| **节点管理** | 预装 ComfyUI-Manager，构建时克隆 + 备份，启动时自动恢复到 volume，无需手动安装 |
+| **容器配置** | 重构 docker-compose，增加持久卷挂载（模型、输出、输入、自定义节点、配置），设置健康检查与环境变量 |
+| **构建系统** | build.sh 支持通过环境变量配置 ComfyUI/Manager/基础镜像版本，自动生成带时间戳的详细标签 |
 
 ## 📄 许可与致谢
 
@@ -168,6 +174,8 @@ services:
 
 **鸣谢:**
 - [ComfyUI](https://github.com/comfyanonymous/ComfyUI) — 节点式 AI 工作流界面
+- [ComfyUI-Manager](https://github.com/Comfy-Org/ComfyUI-Manager) — 自定义节点管理器
+- [ComfyUI-ROCm](https://github.com/corundex/ComfyUI-ROCm) — 上游 AMD ROCm 移植参考仓库
 - [AMD ROCm](https://rocm.docs.amd.com/) — 开源 GPU 计算平台
 - ROCm 社区对 AMD GPU AI 的支持
 

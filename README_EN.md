@@ -24,6 +24,7 @@
 - 📦 **Flexible model management** — Place models manually, persistent volumes avoid re-downloading
 - 🧪 **Tested compatibility** — All dependencies verified on real AMD hardware
 - 🎯 **Ready to use** — Pre-configured with sample workflows
+- 📦 **ComfyUI-Manager built-in** — Node manager pre-installed, no manual setup needed
 - 💾 **Persistent storage** — Models and outputs preserved across restarts
 
 ## 🚀 Quick Start
@@ -116,6 +117,8 @@ services:
 
 Run with: `docker compose up -d`
 
+> **ComfyUI-Manager auto-restore**: The image ships with ComfyUI-Manager pre-installed. On startup, if missing from the `custom_nodes` volume, it is automatically restored from the image backup. Set `COMFYUI_MANAGER_DISABLED=true` to disable this behavior.
+
 ## ⚡ Performance & Hardware
 
 ### Tested Hardware
@@ -136,26 +139,29 @@ Run with: `docker compose up -d`
 
 For issues, please file a [GitHub Issue](https://github.com/selcarpa/ComfyUI-ROCm/issues).
 
-## 🔄 Changes in This Update vs Previous Version
+## 🔄 Changes Since Initial Release
 
 ### 🗑️ Removed
-- **`docker/download_models.py`** + **`docker/models.yaml`** — Auto model downloader removed. Models must be placed manually; see [MODEL_SETUP_EN.md](MODEL_SETUP_EN.md)
+- **Auto model downloader** — Removed `download_models.py` + `models.yaml`; models must now be placed manually (see [MODEL_SETUP_EN.md](MODEL_SETUP_EN.md))
+- **Build-time model copy** — Removed model-related COPY and env vars from Dockerfile
 
 ### 🆕 Added
-- **`BUILD.md` / `BUILD_EN.md`** — Standalone build guides (Chinese/English)
-- **`MODEL_SETUP.md` / `MODEL_SETUP_EN.md`** — Standalone model setup guides (Chinese/English)
-- **`README_EN.md`** — English README (separated from Chinese version for easier maintenance)
+- **ComfyUI-Manager** — Pre-installed node manager, auto-restored on startup, ready to use out of the box
+- **Build system** — `build.sh` + build guides with configurable versions and automatic image tagging
+- **Model setup guides** — Documenting manual model placement
+- **CI/CD automation** — GitHub Actions for automated Docker build & push
+- **Health check** — Container auto-detects whether ComfyUI is running properly
 
-### 🔧 Modified
+### 🔧 Changes
 
-| File | Changes |
-|------|---------|
-| `docker/Dockerfile` | Base image configurable via `ARG`; ROCm 6.4.1 → **7.2.4**, PyTorch 2.6.0 → **2.10.0**; removed `download_models.py`/`models.yaml` copy and `MODEL_DOWNLOAD` env var; **ComfyUI now checked out by tag via `ARG COMIFYUI_TAG`** (instead of pulling latest) |
-| `docker-compose.yaml` | Image changed to `selcarpa/comfyui-rocm`; removed `pull_policy: always` and `MODEL_DOWNLOAD`; added `hostname` and `./data/temp` volume; added comments |
-| `build.sh` | Base image configurable via `--build-arg`; version tag auto-generated from date+time; removed `--progress=plain`; **added `COMIFYUI_TAG` variable** to pin ComfyUI version, included in detailed tag |
-| `docker/requirements_rocm.txt` | Full version bump (frontend 1.23.4→1.44.19, workflow-templates 0.1.30→0.9.91, etc.); added `comfy-kitchen`, `comfy-aimdo`, `comfyui-manager`, `filelock`/`requests`/`simpleeval`/`blake3`; organized by functional sections |
-| `docker/startup.sh` | Removed model download step before startup; starts ComfyUI directly |
-| `README.md` | Rewritten from English to Chinese; content restructured; version info updated |
+| Aspect | Description |
+|--------|-------------|
+| **ROCm upgrade** | Base image upgraded from ROCm 6.4.1 → **7.2.4**, PyTorch 2.6.0 → **2.10.0**; broader AMD GPU support (RX 7000/9000+) |
+| **ComfyUI version pinning** | Switched from pulling latest to checking out a specific tag (`v0.22.0`) for reproducible builds |
+| **Dependency optimization** | Full Python dependency review; removed ROCm-incompatible packages; added `comfyui-manager` and other ecosystem packages; unified version pinning |
+| **Node management** | ComfyUI-Manager pre-installed — cloned at build time, backed up, auto-restored to volume on startup |
+| **Container config** | Refactored docker-compose with persistent volumes (models, output, input, custom nodes, config), health check, and environment variables |
+| **Build system** | build.sh supports configurable versions via env vars (ComfyUI/Manager/Base image), auto-generates timestamped detailed tags |
 
 ## 📄 License & Credits
 
@@ -168,6 +174,8 @@ This project is licensed under GPL-3.0. See the [LICENSE](LICENSE) file for deta
 
 **Acknowledgments:**
 - [ComfyUI](https://github.com/comfyanonymous/ComfyUI) — Node-based AI workflow interface
+- [ComfyUI-Manager](https://github.com/Comfy-Org/ComfyUI-Manager) — Custom node manager
+- [ComfyUI-ROCm](https://github.com/corundex/ComfyUI-ROCm) — Upstream AMD ROCm reference repository
 - [AMD ROCm](https://rocm.docs.amd.com/) — Open source GPU computing platform
 - ROCm community for AMD GPU AI support
 
