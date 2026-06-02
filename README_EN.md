@@ -156,7 +156,7 @@ For issues, please file a [GitHub Issue](https://github.com/selcarpa/ComfyUI-ROC
 
 | Aspect | Description |
 |--------|-------------|
-| **ROCm upgrade** | Base image upgraded from ROCm 6.4.1 → **7.2.4**, PyTorch 2.6.0 → **2.10.0**; broader AMD GPU support (RX 7000/9000+) |
+| **ROCm upgrade** | Base image upgraded from ROCm 6.4.1 → **7.2.4**, PyTorch 2.6.0 → **2.10.0**; broader AMD GPU support (RX 7000/9000+); upstream supports RX 6000 series, this project only supports RX 7000+ |
 | **ComfyUI version pinning** | Switched from pulling latest to checking out a specific tag (`v0.22.0`) for reproducible builds |
 | **Dependency optimization** | Full Python dependency review; removed ROCm-incompatible packages; added `comfyui-manager` and other ecosystem packages; unified version pinning |
 | **Node management** | ComfyUI-Manager pre-installed — cloned at build time, backed up, auto-restored to volume on startup |
