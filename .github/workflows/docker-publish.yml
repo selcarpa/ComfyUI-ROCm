@@ -8,6 +8,11 @@ on:
         required: true
         type: string
         default: 'v0.22.0'
+      comfyui_manager_tag:
+        description: 'ComfyUI-Manager Git tag (e.g. 4.2.1)'
+        required: false
+        type: string
+        default: '4.2.1'
       base_image_tag:
         description: 'ROCm PyTorch base image tag (e.g. rocm7.2.4_ubuntu24.04_py3.12_pytorch_release_2.10.0)'
         required: true
@@ -51,7 +56,8 @@ jobs:
           DETAILED_TAG="$(TZ=Asia/Shanghai date +%Y%m%d_%H%M)_comfyui_${{ inputs.comfyui_tag }}__${{ inputs.base_image_tag }}"
           echo "detailed_tag=${DETAILED_TAG}" >> "$GITHUB_OUTPUT"
           IMAGE_NAME="${{ env.IMAGE_NAME }}" \
-          COMIFYUI_TAG="${{ inputs.comfyui_tag }}" \
+          COMFYUI_TAG="${{ inputs.comfyui_tag }}" \
+          COMFYUI_MANAGER_TAG="${{ inputs.comfyui_manager_tag }}" \
           BASE_IMAGE_TAG="${{ inputs.base_image_tag }}" \
           ./build.sh
 
