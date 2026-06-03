@@ -4,7 +4,7 @@
 
 🔥 **支持 AMD ROCm 的 ComfyUI** — 在 AMD GPU 上运行 ComfyUI，预装优化过的 ROCm 兼容依赖。
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/selcarpa/comfyui-rocm)](https://hub.docker.com/r/selcarpa/comfyui-rocm) [![ROCm](https://img.shields.io/badge/ROCm-7.2.4+-green)](https://rocm.docs.amd.com/) [![AMD GPU](https://img.shields.io/badge/AMD-RX%207000%2B-red)](https://www.amd.com/en/products/graphics/desktops/radeon.html)
+[![Docker Pulls](https://img.shields.io/docker/pulls/selcarpa/comfyui-rocm)](https://hub.docker.com/r/selcarpa/comfyui-rocm) [![ROCm](https://img.shields.io/badge/ROCm-7.2.4+-green)](https://rocm.docs.amd.com/) [![AMD GPU](https://img.shields.io/badge/AMD-RX%207000%2B-red)](https://www.amd.com/en/products/graphics/desktops/radeon.html) [![License](https://img.shields.io/github/license/selcarpa/comfyui-rocm)](https://github.com/selcarpa/comfyui-rocm/blob/main/LICENSE) [![Last Commit](https://img.shields.io/github/last-commit/selcarpa/comfyui-rocm)](https://github.com/selcarpa/comfyui-rocm/commits/main)
 
 ![ComfyUI 界面](Screenshot.png)
 *ComfyUI 在 AMD ROCm 上运行示例*

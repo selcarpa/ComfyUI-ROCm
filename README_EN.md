@@ -4,7 +4,7 @@
 
 🔥 **ComfyUI with AMD ROCm support** — Run ComfyUI on AMD GPUs with optimized ROCm-compatible dependencies.
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/selcarpa/comfyui-rocm)](https://hub.docker.com/r/selcarpa/comfyui-rocm) [![ROCm](https://img.shields.io/badge/ROCm-7.2.4+-green)](https://rocm.docs.amd.com/) [![AMD GPU](https://img.shields.io/badge/AMD-RX%207000%2B-red)](https://www.amd.com/en/products/graphics/desktops/radeon.html)
+[![Docker Pulls](https://img.shields.io/docker/pulls/selcarpa/comfyui-rocm)](https://hub.docker.com/r/selcarpa/comfyui-rocm) [![ROCm](https://img.shields.io/badge/ROCm-7.2.4+-green)](https://rocm.docs.amd.com/) [![AMD GPU](https://img.shields.io/badge/AMD-RX%207000%2B-red)](https://www.amd.com/en/products/graphics/desktops/radeon.html) [![License](https://img.shields.io/github/license/selcarpa/comfyui-rocm)](https://github.com/selcarpa/comfyui-rocm/blob/main/LICENSE) [![Last Commit](https://img.shields.io/github/last-commit/selcarpa/comfyui-rocm)](https://github.com/selcarpa/comfyui-rocm/commits/main)
 
 ![ComfyUI Interface](Screenshot.png)
 *ComfyUI running on AMD ROCm with sample workflow and generated landscape image*
