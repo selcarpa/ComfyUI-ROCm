@@ -7,6 +7,15 @@ log() {
     echo "[ComfyUI] $1"
 }
 
+# ── ComfyUI packages version info ──────────────────────────────
+log "━━━ ComfyUI Packages ━━━"
+COMFYUI_PKGS="comfyui-frontend-package comfyui-workflow-templates comfyui-embedded-docs comfy-kitchen comfy-aimdo comfyui-manager"
+for pkg in $COMFYUI_PKGS; do
+    ver=$(pip show "$pkg" 2>/dev/null | sed -n 's/^Version: //p')
+    [ -n "$ver" ] && log "  $pkg == $ver"
+done
+log "━━━━━━━━━━━━━━━━━━━━━━"
+
 MANAGER_SRC="/workspace/.default_nodes/comfyui-manager"
 MANAGER_DST="/workspace/ComfyUI/custom_nodes/comfyui-manager"
 if [ "${COMFYUI_MANAGER_DISABLED}" != "true" ] && [ ! -d "$MANAGER_DST" ]; then
