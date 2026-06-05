@@ -34,6 +34,7 @@ SQLAlchemy>=2.0.0                     # ORM for workflow database
 kornia>=0.7.1                         # Differentiable CV ops, used by some custom nodes
 spandrel                              # Neural network loader for upscale models
 filelock                              # File locking for concurrent model access
+importlib-metadata                    # Import metadata for package management
 requests                              # HTTP downloads (model fetching, API calls)
 simpleeval>=1.0.0                     # Safe expression evaluator for node inputs
 blake3                                # BLAKE3 hashing for model cache validation
